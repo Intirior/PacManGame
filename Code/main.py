@@ -11,7 +11,7 @@ pygame.mixer.music.play(-1)
 
 limit = WallLimits(wallsList = walls , speed = speed)
 
-ghostsList=[ghostClass(x = 315, y = 282,decision= 'up',speed = speed,WallListClass = limit) for _ in range(5)]
+ghostsList=[ghostClass(x = 315, y = 282,decision= 'up',speed = speed,WallList=walls) for _ in range(4)]
 
 pygame.time.set_timer(pygame.USEREVENT,8000)
 
@@ -21,7 +21,8 @@ PAC=pacManClass(x = 320,y = 320,speed = speed,window = win,pacManImage = pacManI
 
 run=True
 while run:
-    pacRect = pygame.Rect((PAC.x,PAC.y),(22,22))
+    pacRect = pygame.Rect((PAC.x,PAC.y),(22,22)) # create pygame Rect Typeof the pacman's shape
+
     pygame.time.delay(6)
 
     win.fill((0, 0, 0))
@@ -34,10 +35,10 @@ while run:
     for i in range(lives):
         win.blit(liveHeart, (100+(i*35), 10))
 
-    if PAC.x<=leftTeleportPos[0]  and leftTeleportPos[1]+10>=PAC.y>=leftTeleportPos[1] and pacDirection=='LEFT':
+    if PAC.x<=leftTeleportPos[0]  and leftTeleportPos[1]+10>=PAC.y>=leftTeleportPos[1] and PAC.pacDirection=='LEFT':
         PAC.x=rightTeleportPos[0]
 
-    elif PAC.x>=rightTeleportPos[0] and rightTeleportPos[1]+10>=PAC.y>=rightTeleportPos[1] and pacDirection=='RIGHT':
+    elif PAC.x>=rightTeleportPos[0] and rightTeleportPos[1]+10>=PAC.y>=rightTeleportPos[1] and PAC.pacDirection=='RIGHT':
         PAC.x=leftTeleportPos[0]
 
 
@@ -45,9 +46,9 @@ while run:
 
         if event.type==pygame.QUIT:
             quit()
-        if len(ghostsList)<=5:
+        if len(ghostsList)<=MaxGhostAmount:
             if event.type==pygame.USEREVENT:
-                ghostsList.append(ghostClass(315, 280, 'up',speed,WallListClass = limit))
+                ghostsList.append(ghostClass(315, 280, 'up',speed,WallList=walls))
 
         if event.type == pygame.USEREVENT+1:
             PAC.walkCount += 1
@@ -57,19 +58,19 @@ while run:
                 quit()
 
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                pacDirection = 'RIGHT'
+                PAC.pacDirection = 'RIGHT'
                 walkCount = 0
             elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                pacDirection = 'LEFT'
+                PAC.pacDirection = 'LEFT'
                 walkCount = 2
             elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                pacDirection = 'UP'
+                PAC.pacDirection = 'UP'
                 walkCount = 4
             elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                pacDirection = 'DOWN'
+                PAC.pacDirection = 'DOWN'
                 walkCount = 6
 
-    PAC.move(pacDirection,pacRect)
+    PAC.move()
 
     if eatBigPellets((PAC.x, PAC.y))=='Transform':
         MusicFiles['eating_cherry'].play()
@@ -110,13 +111,15 @@ while run:
             transformation = False
         win.blit(ghost, (ghosT.x, ghosT.y))
 
+    if eatPellets((PAC.x,PAC.y),win):
+        score2+=1
+
     if lives<=0:
         MusicFiles['gameover'].play()
         print('you lost')
         pygame.time.delay(3100)
         quit()
-    if eatPellets((PAC.x,PAC.y),win):
-        score2+=1
+
     if score2==88:
         MusicFiles['youwin'].play()
         print('you won')

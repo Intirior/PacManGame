@@ -1,5 +1,7 @@
-import pygame,os
+import pygame
 from pygame import mixer
+import os
+
 pygame.init()
 pygame.mixer.init()
 
@@ -28,15 +30,11 @@ blueGhost = pygame.image.load('../../PacManGame/photos/z cyan_0.png').convert_al
 bg_music = mixer.music.load("../../PacManGame/Songs/bg_music.wav")
 mixer.music.set_volume(0.1)
 
-MusicFiles = {f"{name[:name.find('.wav')]}":pygame.mixer.Sound(f"../../PacManGame/Sounds/{name}") for name in os.listdir('D:\PycharmProjects\my_project\PacMan\Sounds')}
+MusicFiles = {f"{name[:name.find('.wav')]}":pygame.mixer.Sound(f"../../PacManGame/Sounds/{name}") for name in os.listdir('../../PacManGame/Sounds')}
 for file in MusicFiles.values():
     file.set_volume(0.1)
 
 lives=3
-
-pacDirection= ''
-
-ghostDirection=['right','left','up','down']
 
 rightTeleportPos=(528 ,264)
 leftTeleportPos=(109 , 264)
@@ -48,3 +46,5 @@ transformation=False
 score2=0
 
 speed = 1
+
+MaxGhostAmount = 7

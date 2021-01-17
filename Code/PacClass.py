@@ -9,41 +9,41 @@ class pacManClass(WallLimits):
         self.y=y
         self.win=window
         self.pac=pacManImage
+        self.pacDirection= ''
 
-
-    def move(self,pacDirection,pacRect):
-        if pacDirection == 'RIGHT' and self.RightMovment(self.x, self.y): # ,pacRect,pacDirection
+    def move(self):
+        if self.pacDirection == 'RIGHT' and self.RightMovment(self.x, self.y): # ,pacRect,pacDirection
             self.x += self.speed
             if self.walkCount >= 2:
                 self.walkCount = 0
             self.win.blit(self.pac[self.walkCount], (self.x, self.y))
 
-        elif pacDirection == 'LEFT' and self.LeftMovment(self.x, self.y): # ,pacRect,pacDirection
+        elif self.pacDirection == 'LEFT' and self.LeftMovment(self.x, self.y): # ,pacRect,pacDirection
             self.x -= self.speed
             if self.walkCount >= 4:
                 self.walkCount = 2
             self.win.blit(self.pac[self.walkCount], (self.x, self.y))
 
-        elif pacDirection == 'UP' and self.UpMovement(self.x, self.y): # ,pacRect,pacDirection
+        elif self.pacDirection == 'UP' and self.UpMovement(self.x, self.y): # ,pacRect,pacDirection
             self.y -= self.speed
             if self.walkCount >= 6:
                 self.walkCount = 4
             self.win.blit(self.pac[self.walkCount], (self.x, self.y))
 
-        elif pacDirection == 'DOWN' and self.DownMovement(self.x, self.y): # ,pacRect,pacDirection
+        elif self.pacDirection == 'DOWN' and self.DownMovement(self.x, self.y): # ,pacRect,pacDirection
             self.y += self.speed
             if self.walkCount >= 8:
                 self.walkCount = 6
             self.win.blit(self.pac[self.walkCount], (self.x, self.y))
 
         else:
-            if pacDirection == 'RIGHT':
+            if self.pacDirection == 'RIGHT':
                 self.win.blit(self.pac[0], (self.x, self.y))
-            elif pacDirection == "LEFT":
+            elif self.pacDirection == "LEFT":
                 self.win.blit(self.pac[2], (self.x, self.y))
-            elif pacDirection == "UP":
+            elif self.pacDirection == "UP":
                 self.win.blit(self.pac[4], (self.x, self.y))
-            elif pacDirection == 'DOWN':
+            elif self.pacDirection == 'DOWN':
                 self.win.blit(self.pac[6], (self.x, self.y))
             else:
                 self.win.blit(self.pac[0], (self.x, self.y))
