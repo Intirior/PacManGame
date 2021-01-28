@@ -10,8 +10,6 @@ class ghostClass(WallLimits):
         self.decision=decision
         self.speed=speed
 
-
-
     def decideAndMove(self):
         if self.decision == 'right' and self.RightMovment(self.x,self.y):
             self.x += self.speed
